@@ -73,5 +73,42 @@ A note to record useful tips for CKA
 ### Command
 * k replace --force -f nginx.yaml
 
-##
+## Selector / Label
+* 對資源進行篩選、標記
+
+## Taint / Tolerations
+* 在進行 Scheduling 的時候來控管調度的方法
+* 被 Taint 的 Node，Pod 要 Toleration 才能調度
+* 通常和 Node Affinity 搭配使用
+
+## Node Affinity
+* 在進行 Scheduling 的時候來控管調度的方法
+* 在 Pod 上設定對哪些 Node 具有 Affinity 進行調度
+* 通常和 Taint / Toleration 搭配使用
+* 配置 YAML 要參考官方文檔
+
+## Resource Limits
+* 在 Yaml 中限制 Pod 能夠用多少的資源量
+* Resource Limit就是修改文件敘述然後 Replace Pod 即可生效
+
+## Demonsets
+* 設定守護背景程序，會自動由 k8s 回收及調度
+* 從手動調度的東西變成 k8s 處理的方法
+* Demonsets 創建的時候可以用 Deployment 的模版  
+  然後刪除 status / replica / strategy 即可使用
+
+## Static Pod
+* YAML 只能在 /etc/kubernetes/manifests 看到
+* 如果預設路徑找不到 YAML，到 /var/lib/kubelet/config.yaml 看 Static Pod 的路徑在哪
+
+## Priority Class
+* 用來決定 Pod 內調度的優先及別
+* 如果要更正pod的priority，不能直接改，要用priorityclass指定檔案重啟pod
 ### Command
+* kubectl get priorityclass
+
+## Multiple Schedulers
+* 用來過濾、校驗、修正對 API Server 的請求，在進入 RBAC 裡面之前調用
+* 可以在 Pod Yaml 指定要運行的scheduler:`schedulerName: yourSchedulerName`
+### Command
+* kubectl get pods --namespace=kube-system
