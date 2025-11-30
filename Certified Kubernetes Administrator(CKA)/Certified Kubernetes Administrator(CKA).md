@@ -130,3 +130,45 @@ A note to record useful tips for CKA
   --key "/root/keys/webhook-server-tls.key"
 
 # Logging & Monitoring
+## Monitoring Cluster
+* 使用流行插件可以監控，課程沒有詳細探討插件
+### Command
+* Display resource (CPU/memory) usage：kubectl top pod
+
+## Monitoring Applications Logs
+* 使用流行插件可以監控，課程沒有詳細探討插件
+### Command
+* kubectl logs webapp-1
+
+# Application Lifecycle Management
+## Rolling Updates and Rollbacks
+* 滾動更新或回退策略
+* 主要與 Deployment 有關係，找敘述的話在裡面可以找到
+* 注意 Rolling Update 和 Recreate 的欄位需求不一樣
+### Command
+
+## Commands and Arguments
+* 在 YAML 檔中定義 Container Command
+* Dockerfile 最好可以看一下
+* 在 Kubernetes 中，當你在 Pod 規範中指定command欄位時，它會完全取代 Docker 的 ENTRYPOINT 和 CMD。它不會附加或修改 ENTRYPOINT。
+### Command
+* k run webapp-green --image=webapp-color -- --color green
+
+## ConfigMap（Env Variables）
+* 把 YAML 內的參數整理起來能夠統一作為配置檔使用的方法
+* 配置在 Pod 中的 ConfigMap 參照一下官方文件配置
+### Command
+* k get configmaps
+* kubectl create configmap  webapp-config-map --from-literal=APP_COLOR=darkblue
+
+## Secret
+* 處理帶有敏感訊息的加密配置方法
+* 注意在創建 Secret 的時候要指定類型
+* 正常在處理 Secret 的時候還要配上加密方案，不然任何人都可以訪問到
+### Command
+* k get secret
+* kubectl create secret generic db-secret --from-literal=DB_Host=sql01 --from-literal=DB_User=root
+
+## Multi Container Pods
+* 把多個應用程序需要進行搭配的塞在同一個 Pod 中的方法
+### Command
