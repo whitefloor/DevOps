@@ -21,6 +21,7 @@ A note to record useful tips for CKA
 * 解釋資源的字段解釋與結構說明：kubectl explain rs
 * 簡易創造 YAML 方法：kubectl create rs --dry-run=client -o > rs.yaml
 
+# Scheduling
 ## Pod
 * k8s 中最小的資源單位
 ### Command
@@ -108,7 +109,24 @@ A note to record useful tips for CKA
 * kubectl get priorityclass
 
 ## Multiple Schedulers
-* 用來過濾、校驗、修正對 API Server 的請求，在進入 RBAC 裡面之前調用
+* 內建的 Schedulers 無法滿足時可以自訂義調度方法
 * 可以在 Pod Yaml 指定要運行的scheduler:`schedulerName: yourSchedulerName`
 ### Command
 * kubectl get pods --namespace=kube-system
+
+## Admission Controllers
+* 用來過濾、校驗、修正對 API Server 的請求，在進入 RBAC 裡面之前調用
+### Command
+* kubectl exec -it kube-apiserver-controlplane -n kube-system -- kube-apiserver -h | grep 'enable-admission-plugins'
+* grep enable-admission-plugins /etc/kubernetes/manifests/kube-apiserver.yaml
+* ps -ef | grep kube-apiserver | grep admission-plugins
+
+## Validating and Mutating Admission Controllers
+* 用來過濾、校驗、修正對 API Server 的請求，在進入 RBAC 裡面之前調用
+* 先 Mutating > Validating
+### Command
+* kubectl -n webhook-demo create secret tls webhook-server-tls \
+  --cert "/root/keys/webhook-server-tls.crt" \
+  --key "/root/keys/webhook-server-tls.key"
+
+# Logging & Monitoring
